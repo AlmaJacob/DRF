@@ -22,4 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.sample_fun),
     path('modal',views.modal_fun),
+    path('modal2/<id>',views.modal2_fun),
+    path('modal3',views.modal3_fun),
 ]
