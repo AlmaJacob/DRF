@@ -24,4 +24,9 @@ urlpatterns = [
     path('modal',views.modal_fun),
     path('modal2/<id>',views.modal2_fun),
     path('modal3',views.modal3_fun),
+    path('modal4/<d>',views.modal4_fun),
+    path('modal5',views.modal5_fun.as_view()),
+    path('modal6/<d>',views.modal6_fun.as_view()),
+    path('genericapiview',views.genericapiview.as_view()),
+    path('update/<id>',views.update.as_view()),
 ]

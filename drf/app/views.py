@@ -6,7 +6,9 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.decorators import APIView
 from rest_framework import status
+from rest_framework import generics,mixins
 # Create your views here.
 
 def sample_fun(req):
@@ -70,11 +72,11 @@ def modal3_fun(req):
 @api_view(['GET','PUT','DELETE'])
 def modal4_fun(req,d):
    try:
-      demo=Student.objects.get(pk=id)
-   except Student.DoesNotExist:
+      demo=Project_user.objects.get(pk=d)
+   except Project_user.DoesNotExist:
       return Response(status=status.HTTP_404_NOT_FOUND)
    if req.method=='GET':
-      S=model_serializer(demo)
+      s=model_serializer(demo)
       return Response(s.data)
    elif req.method=='PUT':
      s=model_serializer(demo,data=req.data)
@@ -87,9 +89,9 @@ def modal4_fun(req,d):
       demo.delete()
       return Response(status=status.HTTP_204_NO_CONTENT)
 
-class modal5_fun(APIview):
+class modal5_fun(APIView):
    def get(self,req):
-      demo=Student.objects.all()
+      demo=Project_user.objects.all()
       s=model_serializer(demo,many=True)
       return Response(s.data)
    def post(self,req):
@@ -101,38 +103,38 @@ class modal5_fun(APIview):
          return JsonResponse(s.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class modal6_fun(APIView):
-   def get(delf,req,d):
+   def get(self,req,d):
       try:
-         demo=Student.objects.get(pk=id)
+         demo=Project_user.objects.get(pk=d)
          s=model_serializer(demo)
          return Response(s.data)
-      except Student.DoesNotExist:
+      except Project_user.DoesNotExist:
          return Response(status=status.HTTP_404_NOT_FOUND)
 
    def put(self,req,d):
       try:
-        demo=Student.objects.get(pk=id)
+        demo=Project_user.objects.get(pk=d)
         s=model_serializer(demo,data=req.data)
         if s.is_valid():
          s.save()
          return Response(s.data)
         else:
          return Response(status=status.HTTP_400_BAD_REQUEST)
-      except Student.DoesNotExist:
+      except Project_user.DoesNotExist:
          return Response(status=status.HTTP_404_NOT_FOUND)
 
 
    def delete(self,req,d):
       try:
-         demo=Student.objects.get(pk=id)
+         demo=Project_user.objects.get(pk=d)
          demo.delete()
          return Response(status=status.HTTP_204_NO_CONTENT)
-      except Student.DoesNotExist:
+      except Project_user.DoesNotExist:
          return Response(status=status.HTTP_404_NOT_FOUND)
 
 class genericapiview(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
-    serializer_class = Model_serializer
-    queryset = Student.objects.all()
+    serializer_class = model_serializer
+    queryset = Project_user.objects.all()
 
     def get(self, req):
         return self.list(req)
@@ -142,8 +144,8 @@ class genericapiview(generics.GenericAPIView, mixins.ListModelMixin, mixins.Crea
 
 
 class update(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    serializer_class = Model_serializer
-    queryset = Student.objects.all()
+    serializer_class = model_serializer
+    queryset = Project_user.objects.all()
     lookup_field = 'id'
 
     def get(self, req, id=None):
